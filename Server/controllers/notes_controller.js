@@ -62,3 +62,17 @@ export const clearNotes = async (req, res) => {
     // Respond with a success message and a status of 200
     return res.status(200).json({ message: "All notes deleted successfully" });
 };
+
+// Update a note by its id in the database
+export const updateNote = async (req, res) => {
+    const { id: noteID } = req.params;
+    // Find and update the note, return the updated note with { new: true, runValidators: true }
+    const task = await task_model.findByIdAndUpdate(noteID, req.body, { new: true, runValidators: true });
+
+    if (!task) {
+        // If no note is found, send a 404 error
+        throw Error(`message: No task with id: ${noteID} was found`);
+    }
+
+    res.status(200).json({ task });  // Send the updated task as the response
+};

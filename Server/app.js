@@ -32,7 +32,6 @@ const start = async () => {
     try {
         // Connect to the database using the MongoDB URI from environment variables
         await connectDB(process.env.MONGO_URI);
-        console.log('Database connected successfully ...');
 
         // Start the server and listen on the specified port
         app.listen(port, () => {

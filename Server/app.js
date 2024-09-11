@@ -6,37 +6,43 @@ import { errorHandler } from './middlewares/error-handler.js';
 import { notFound } from './middlewares/404-pages.js';
 import { logger } from './middlewares/request-logger.js';
 
-const app = express();
+// Load environment variables from the .env file
 dotenv.config();
+
+// Create an instance of an Express application
+const app = express();
+
+// Define the port the server will listen on
 const port = process.env.PORT || 3000;
 
+// Middleware Setup
+app.use(express.json()); // Parse incoming JSON requests
+app.use(express.urlencoded({ extended: true })); // Parse incoming URL-encoded data
+app.use(logger); // Custom logger middleware to log requests
 
-// Middleware
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(logger);
+// Routes Setup
+app.use('/api/v1/notes', notes); // Set up routes for note management
 
-//routes
-app.use('/api/v1/notes', notes);
+// Error Handling
+app.use(notFound); // Handle requests to non-existent routes
+app.use(errorHandler); // Handle errors that occur in the application
 
-// 404 handler
-app.use(notFound);
-
-// error handler
-app.use(errorHandler);
-
-// Start server
+// Start Server
 const start = async () => {
     try {
-       await connectDB(process.env.MONGO_URI);
+        // Connect to the database using the MongoDB URI from environment variables
+        await connectDB(process.env.MONGO_URI);
+        console.log('Database connected successfully ...');
 
-       app.listen(port, () => {
-           console.log(`Server is running on port ${port} ...`);
-       });
+        // Start the server and listen on the specified port
+        app.listen(port, () => {
+            console.log(`Server is running on port ${port} ...`);
+        });
     } catch (error) {
-        console.error(error);
+        // Log any errors that occur during server startup
+        console.error('Error starting the server:', error);
     }
 }
 
+// Call the start function to run the application
 start();
-

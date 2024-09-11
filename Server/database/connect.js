@@ -4,9 +4,7 @@ import mongoose from "mongoose";
 export const connectDB = (url) => {
     // Use mongoose.connect to establish a connection to the database using the provided URL
     return mongoose.connect(url)
-        .then(() => {
-            console.log('Database connected successfully ...');  // Log success message
-        })
+        .then()
         .catch((error) => {
             console.error('Database connection error:', error);  // Log any connection errors
             throw error;  // Propagate the error for further handling

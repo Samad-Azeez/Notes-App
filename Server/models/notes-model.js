@@ -1,27 +1,27 @@
 import mongoose from "mongoose";
 
-// Schema for notes
+// Define the schema for notes
 const notesSchema = new mongoose.Schema({
     name: {
         type: String,
         required: [true, "Name is required"],
-        trim: true,
-        maxlength: [30, "Name cannot be more than 100 characters"]
+        trim: true,                           // Trim whitespace from the name
+        maxlength: [30, "Name cannot be more than 30 characters"]
     },
     content: {
         type: String,
-        required: [true, "Content is required"],
-        trim: true
+        required: [true, "Content is required"], // Content field is required with a custom error message
+        trim: true                           // Trim whitespace from the content
     },
     tag: {
-        type: [String],
-        enum: ["work", "personal", "school", "others"],
+        type: [String],                       // Tag field is an array of strings
+        enum: ["work", "personal", "school", "others"], // Enum specifies valid values for tags
     },
     completed: {
         type: Boolean,
-        default: false
+        default: false                       // Default value for completed is false
     }
+}, { timestamps: true });  // Automatically add createdAt and updatedAt fields
 
-}, { timestamps: true });
-
+// Create and export the Note model based on the schema
 export const notes_model = mongoose.model("Note", notesSchema);

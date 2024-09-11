@@ -1,5 +1,5 @@
 import express from 'express'; // Import the Express library
-import { getNotes, createNote, deleteNote, clearNotes } from '../controllers/notes_controller.js'; // Import controller functions
+import { getNotes, createNote, deleteNote, clearNotes, updateNote } from '../controllers/notes_controller.js'; // Import controller functions
 
 export const notes = express.Router(); // Create a new router for handling notes
 
@@ -11,4 +11,5 @@ notes.route('/')
 
 // Define routes for individual note operations using the note ID
 notes.route('/:id')
+    .put(updateNote) // Handle PUT request to update a specific note identified by :id
     .delete(deleteNote); // Handle DELETE request for a specific note identified by :id

@@ -42,7 +42,7 @@ export const deleteNote = async (req, res) => {
     
     // Check if the note was found and deleted; if not, throw an error
     if (!notes) {
-        throw Error(`message: No task with id: ${noteID} was found`);
+        throw Error(`message: No notes with id: ${noteID} was found`);
     }
 
     // Respond with the deleted note and a status of 200
@@ -67,12 +67,12 @@ export const clearNotes = async (req, res) => {
 export const updateNote = async (req, res) => {
     const { id: noteID } = req.params;
     // Find and update the note, return the updated note with { new: true, runValidators: true }
-    const task = await task_model.findByIdAndUpdate(noteID, req.body, { new: true, runValidators: true });
+    const notes = await notes_model.findByIdAndUpdate(noteID, req.body, { new: true, runValidators: true });
 
-    if (!task) {
+    if (!notes) {
         // If no note is found, send a 404 error
-        throw Error(`message: No task with id: ${noteID} was found`);
+        throw Error(`message: No notes with id: ${noteID} was found`);
     }
 
-    res.status(200).json({ task });  // Send the updated task as the response
+    res.status(200).json({ notes });  // Send the updated note as the response
 };

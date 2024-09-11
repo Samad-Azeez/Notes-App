@@ -11,5 +11,5 @@ notes.route('/')
 
 // Define routes for individual note operations using the note ID
 notes.route('/:id')
-    .put(updateNote) // Handle PUT request to update a specific note identified by :id
+    .patch(updateNote) // Handle PUT request to update a specific note identified by :id
     .delete(deleteNote); // Handle DELETE request for a specific note identified by :id

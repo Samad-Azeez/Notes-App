@@ -1,8 +1,12 @@
 export const logger = (req, res, next) => {
+    // Log the request method, URL, response status code, and current timestamp
     console.log({
-        'Request Rethod': req.method,
-        'Request URL': req.url,
-        'Response StatusCode': res.statusCode
+        method: req.method,            // HTTP method (GET, POST, etc.)
+        url: req.url,                  // URL of the request
+        statusCode: res.statusCode,     // Response status code
+        timestamp: new Date().toISOString()  // Current timestamp in ISO format for accurate log time
     });
-    next()
+
+    // Call next middleware or route handler
+    next();
 }

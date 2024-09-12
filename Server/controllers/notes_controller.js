@@ -1,22 +1,45 @@
 import { notes_model } from "../models/notes-model.js";
 import 'express-async-errors'
 
-// Get all notes
+// Get all notes ( with query parameters for filtering )
 export const getNotes = async (req, res) => {
-    // Fetch all notes from the database
-    const notes = await notes_model.find({});
+    const { name, tag, completed } = req.query;
+    const queryObject = {};
+
+    // if completed query parameter is provided, convert it to boolean and add it to the query object
+    if (completed === 'true') { 
+        queryObject.completed = true; 
+    }else if (completed === 'false') {
+        queryObject.completed = false;
+    }
+
+    // If the name query parameter is provided, add it to the query object
+    if (name) {
+        queryObject.name = { $regex: name, $options: 'i' };
+    }
+
+    // If the tag query parameter is provided, add it to the query object
+    if (tag) {
+        queryObject.tag = tag;
+    }
+
+    // Log the query object to the console
+    console.log(queryObject);
+
+    const notes = await notes_model.find( queryObject ); // Get all notes
 
     // Throw an error if something went wrong while fetching notes
     if (!notes) {
-        throw Error(`Something went wrong, unable to get all notes`);
+        throw Error(`Something went wrong, unable to get notes`);
     }
 
     // Count the number of notes retrieved
     const nbHits = notes.length;
 
     // Respond with the notes and the number of hits
-    res.status(200).json({ notes, nbHits });
-}
+    res.status(200).json( { notes, nbHits } );
+};
+
 
 // Create a new note
 export const createNote = async (req, res) => {

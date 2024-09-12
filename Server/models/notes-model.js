@@ -20,6 +20,10 @@ const notesSchema = new mongoose.Schema({
     completed: {
         type: Boolean,
         default: false                       // Default value for completed is false
+    },
+    pinned: {
+        type: Boolean,
+        default: false                       // Default value for pinned is false
     }
 }, { timestamps: true });  // Automatically add createdAt and updatedAt fields
 
